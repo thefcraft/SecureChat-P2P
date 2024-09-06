@@ -41,7 +41,8 @@ def middleware(cryptor:BasicSymmetricKeyEncrpter, data: str, encrypt: bool = Tru
 # DONE no room message
 
 # TODO proper exit handling...
-
+# if not able to do this using threading then if process.is_alive(): process.terminate()  # multiprocessing library, which allows you to terminate processes
+# DONE start server as soon as the app is started to minimize the time
 # TODO add timeout for join room
 
 ctk.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
@@ -457,8 +458,6 @@ class ChatUI(ctk.CTkFrame):
             # self.root.home() done at on close callback
 
 class App(ctk.CTk):
-    uri = "wss://webrtc-handshake-server.onrender.com/ws"
-    endpoint = "https://webrtc-handshake-server.onrender.com"
     
     def __init__(self):
         super().__init__()
@@ -824,7 +823,17 @@ class App(ctk.CTk):
         self.loop_thread.start()
         
 if __name__ == "__main__":
+    uri = "wss://webrtc-handshake-server.onrender.com/ws"
+    endpoint = "https://webrtc-handshake-server.onrender.com"
     try:
+        def wake_up_baby():
+            try: 
+                response = requests.get(endpoint, timeout=3)  # if handshake server will enter into a sleep mode then wake up the server.
+                print("Server is running...")
+                print(f"Status Code: {response.status_code}")
+            except requests.RequestException as e: print(f"An error occurred: {e}")
+        threading.Thread(target=wake_up_baby).start()
+        
         app = App()
         app.mainloop()
     except KeyboardInterrupt: sys.exit(0)

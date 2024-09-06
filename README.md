@@ -42,6 +42,14 @@ Welcome to **SecureChat-P2P**, a peer-to-peer chat application designed with you
 3. **Ending a Chat:**
    - Close the chat room window to ensure all data is permanently deleted.
 
+## Img
+
+![HOME PAGE](/img/home.png)
+
+![CREATE PAGE](/img/create.png)
+
+![CHAT PAGE](/img/chat.png)
+
 ## Important Notes
 
 - **Handshake Server:** If no user activity is detected, the handshake server will enter sleep mode. Allow 30 to 60 seconds for the server to wake up and generate a room code.

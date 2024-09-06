@@ -8,7 +8,9 @@ a = Analysis(
     ['app.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[
+        ('assets/', 'assets/'), # Include the assets folder
+    ],
     hiddenimports=['pkg_resources.extern'],
     hookspath=[],
     hooksconfig={},
@@ -28,7 +30,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='app',
+    name='SecureChat-P2P',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -41,4 +43,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon='assets/icon.ico',
 )

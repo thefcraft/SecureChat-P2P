@@ -9,7 +9,8 @@ import datetime
 import asyncio
 import json, requests
 import websockets
-from PIL import Image
+import os
+from PIL import Image, ImageTk
 from aiortc import RTCPeerConnection, RTCSessionDescription, RTCDataChannel
 
 from basicSymmetricKeyEncryption import BasicSymmetricKeyEncrpter
@@ -41,8 +42,20 @@ def middleware(cryptor:BasicSymmetricKeyEncrpter, data: str, encrypt: bool = Tru
 
 # TODO proper exit handling...
 
+# TODO add timeout for join room
+
 ctk.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
 ctk.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
+
+def get_asset_path(filename):
+    if getattr(sys, 'frozen', False):
+        # The application is running as a bundled executable
+        base_path = sys._MEIPASS
+    else:
+        # The application is running in a development environment
+        base_path = os.path.dirname(__file__)
+    
+    return os.path.join(base_path, 'assets', filename)
 
 class Home(ctk.CTkScrollableFrame):
     def __init__(self, master:"App", **kwargs):
@@ -455,11 +468,10 @@ class App(ctk.CTk):
         self.configure(fg_color="#1c1c1c")
         
         # Load the icon image (use .png or .ico files)
-        # icon_image = Image.open("icon.png")  # Load your .png file
-
-        # Convert image to PhotoImage format used by tkinter
-        # icon_photo = ctk.CTkImage(image=icon_image)
-        # self.iconphoto(True, icon_photo )
+        img = Image.open(get_asset_path("icon.png"))
+        icon_image = ImageTk.PhotoImage(img) # Load your .png file
+        self.wm_iconbitmap()
+        self.iconphoto(False, icon_image)
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)

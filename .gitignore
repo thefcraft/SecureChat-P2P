@@ -2,3 +2,4 @@ app copy.py
 dist/
 build/
 __pycache__/
+other/
